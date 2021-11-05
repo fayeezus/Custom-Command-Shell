@@ -1,4 +1,4 @@
-# csc332project
+# CSC332 Group Project - Program Directory
 
 # Team Members:
 ## Faez Farhad
