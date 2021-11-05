@@ -1,5 +1,13 @@
 # csc332project
 
+# Team Members:
+## Faez Farhad
+## Farouq Adepetu
+## Progga Chowdhury
+## Orlando Saddler
+## Moshahid Kallol
+
+
 The object of this assignment is to gain experience with some advanced programming techniques like
 process creation and control, file descriptors, signals and possibly pipes. To do this, a team of 5 students
 will be working together to write their own command shell - much like csh, bsh or the DOS command
