@@ -16,6 +16,6 @@ int main()
     int t3 = open("t3.txt", O_RDWR | O_CREAT, S_IRWXU | S_IRWXG | S_IRWXO);
 
     mkdir("Dir1", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH); //making Dir1 inside Dir0;
-    printf("All the tasks are complete \n");
+    //printf("All the tasks are complete \n");
     return 0;
 }
