@@ -5,56 +5,9 @@
 #include <string.h>
 #include <sys/wait.h>
 
-#define clear() printf("\033[H\033[J") 
-
-
-void exiting(char *str) {   
-    printf("The last 4 commands used were...\n");
-
-    size_t cnt  = 0; // To store count of '\n'
-    char *target_pos   = NULL; // To store the output position in str 
-  
-    /* Step 1: Find the last occurrence of '\n' */
-    target_pos = strrchr(str, '\n'); 
-  
-    /* Error if '\n' is not present at all */
-    if (target_pos == NULL) 
-    { 
-        fprintf(stderr, "ERROR: string doesn't contain '\\n' character\n"); 
-        return; 
-    } 
-  
-    /* Step 2: Find the target position from where we need to print the string */
-    while (cnt < 5) 
-    { 
-        // Step 2.a: Find the next instance of '\n' 
-        while (str < target_pos && *target_pos != '\n') 
-            --target_pos; 
-         /* Step 2.b: skip '\n' and increment count of '\n' */
-        if (*target_pos ==  '\n') 
-            --target_pos, ++cnt; 
-        /* str < target_pos means str has less than 5 '\n' characters, 
-           so break from loop */
-        else
-            break; 
-    } 
-  
-    /* In while loop, target_pos is decremented 2 times, that's why target_pos + 2 */
-    if (str < target_pos) 
-        target_pos += 2; 
-  
-    // Step 3: Print the string from target_pos 
-    printf("%s\n", target_pos); 
-} 
-
-void returnTerminate() 
-{
-    printf("\nHit the \"return\" key to terminate...");
-    while(getchar() != '\n');
-    exit(0);
-}
-
-//List.c by Orlando 
+//************************************************************
+//List.c by Orlando Saddler Started
+//************************************************************
 void list()
 {
     int pid = fork();
@@ -102,7 +55,14 @@ void list()
     }
       
 }
+//************************************************************
+//List.c by Orlando Saddler Finished
+//************************************************************
 
+
+//************************************************************
+//shell.c by Faez Farhad Started
+//************************************************************
 void shell()
 {
 	printf("Warrior's Terminal initialized..\n");
@@ -132,8 +92,7 @@ void functions(){ //combining all functions into the shell file
 	pid1 = fork();
 	while(1){
 		wait(NULL);
-		char* arg[100];		
-	//	char paths[100];    
+		char* arg[100];		 
 		printf("#");			   
 		fgets(n, 100, stdin);
 		strcat(history, n);
@@ -162,15 +121,7 @@ void functions(){ //combining all functions into the shell file
 				printf("Previous Specified Directory: ");
 				cdout();
 			}
-		}
-        if(strcmp(arg[0], "exit") == 0)
-		{
-			list();
-			exiting(history);
-            returnTerminate();
-			printf("Press the ENTER key to exit\n"); 
-			exit(0);
-		}  	
+		}	
 		if(strcmp(arg[0], "list") == 0)
 		{
 			clear();
@@ -186,6 +137,9 @@ void functions(){ //combining all functions into the shell file
 			execvp(arg[0], arg);
 	} 
 }
+//************************************************************
+//Shell.c by Faez Farhad Finished
+//************************************************************
 
 int main() 
 { 
