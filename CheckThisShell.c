@@ -242,7 +242,7 @@ void cdin(char *arg)
 	printf("%s\n", getcwd(paths,100));
 }
 
-char history[8192];
+//char history[8192];
 
 void functions(int historyFD, bool done){ //combining all functions into the shell file
 	char n[100];
@@ -254,7 +254,7 @@ void functions(int historyFD, bool done){ //combining all functions into the she
 	{
 		printf("#");			   
 		fgets(n, 100, stdin);
-		strcat(history, n);
+		//strcat(history, n);
 		char *s = strchr(n, '\n');
 		if(s){			   
 			*s = '\0';
