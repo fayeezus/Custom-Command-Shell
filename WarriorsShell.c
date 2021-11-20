@@ -20,14 +20,16 @@ void tree()
     chdir("Dir0"); //changing directory to Dir0;
 
     //creating 3 txt files;
-    open("t1.txt", O_RDWR | O_CREAT, S_IRWXU | S_IRWXG | S_IRWXO);
-    open("t2.txt", O_RDWR | O_CREAT, S_IRWXU | S_IRWXG | S_IRWXO);
-    open("t3.txt", O_RDWR | O_CREAT, S_IRWXU | S_IRWXG | S_IRWXO);
+    int t1 = open("t1.txt", O_RDWR | O_CREAT, S_IRWXU | S_IRWXG | S_IRWXO);
+    int t2 = open("t2.txt", O_RDWR | O_CREAT, S_IRWXU | S_IRWXG | S_IRWXO);
+    int t3 = open("t3.txt", O_RDWR | O_CREAT, S_IRWXU | S_IRWXG | S_IRWXO);
+
+    close(t1);
+    close(t2);
+    close(t3);
 
     mkdir("Dir1", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH); //making Dir1 inside Dir0;
     //printf("All the tasks are complete \n");
-
-
 }
 //************************************************************
 //tree.c by Moshahid Kallol Finished
@@ -159,13 +161,20 @@ void path()
 			concatenate = fgetc(path_file); // fgetc() will to read the content of a file, one character at a time
 		}
 
-			printf("(3) Concatenated the content of tree.txt & path.txt into t3.txt \n\n"); // print that concatenation was successful 
-			rename("t3.txt", "log.txt"); // 4. change the neme of t3.txt into log.txt 
-			printf("(4) Renamed the file t3.txt into log.txt \n\n"); /// print that t3.txt file was renamed to log.txt
-			remove("tree.txt"); // 5. delete tree.txt
-			remove("path.txt"); // 5. delete path.txt
-			printf("(5) Deleted files tree.txt & path.txt \n\n"); // print that the files tree.txt & path.txt were deleted successfully
-			printf("---------------------------------------------------------------------------------------------------- \n\n");                                   
+		fclose(tree_file);
+		fclose(path_file);
+		fclose(t3_file);
+
+		printf("(3) Concatenated the content of tree.txt & path.txt into t3.txt \n\n"); // print that concatenation was successful 
+
+		rename("t3.txt", "log.txt"); // 4. change the neme of t3.txt into log.txt 
+		printf("(4) Renamed the file t3.txt into log.txt \n\n"); /// print that t3.txt file was renamed to log.txt
+
+		remove("tree.txt"); // 5. delete tree.txt
+		remove("path.txt"); // 5. delete path.txt
+		printf("(5) Deleted files tree.txt & path.txt \n\n"); // print that the files tree.txt & path.txt were deleted successfully
+
+		printf("---------------------------------------------------------------------------------------------------- \n\n");                                   
 	}
 	
 	else 
