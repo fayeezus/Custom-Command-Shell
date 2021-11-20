@@ -331,7 +331,7 @@ void cdin(char *arg)
 	printf("%s\n", getcwd(paths,100));
 }
 
-char history[8192];
+//char history[8192]; not needed, not using an array for historying
 
 void functions(int historyFD, bool done){ //combining all functions into the shell file
 	char n[100];
@@ -372,6 +372,10 @@ void functions(int historyFD, bool done){ //combining all functions into the she
 		}
         if(strcmp(arg[0], "tree") == 0)
 		{
+			//write argument to history.txt file
+			write(historyFD, arg[0], strlen(arg[0]));
+			write(historyFD, "\n", 1);
+		
 			printf("Creating dir0 and contents\n");
 			tree();
             printf("tree command tasks completed.\n");
@@ -379,8 +383,8 @@ void functions(int historyFD, bool done){ //combining all functions into the she
 		if(strcmp(arg[0], "list") == 0)
 		{
 			//write argument to history.txt file
-			//write(historyFD, arg[0], strlen(arg[0]));
-			//write(historyFD, "\n", 1);
+			write(historyFD, arg[0], strlen(arg[0]));
+			write(historyFD, "\n", 1);
 
 			//clear();
 			list();
@@ -391,6 +395,10 @@ void functions(int historyFD, bool done){ //combining all functions into the she
 		}
 		if(strcmp(arg[0], "path") == 0)
 		{
+			//write argument to history.txt file
+			write(historyFD, arg[0], strlen(arg[0]));
+			write(historyFD, "\n", 1);
+			
 			printf("Executing path command..\n");
 			path();
 		}
