@@ -292,7 +292,7 @@ int exitFunction(bool* done)
 		return 1;
 	}
 
-	printf("\nType exit again to confirm you want to close the terminal.\n");
+	printf("\nHit RETURN OR ENTER to exit terminal.\n");
 
 	//loop to make sure
 	//program exits when ENTER or RETURN is hit
