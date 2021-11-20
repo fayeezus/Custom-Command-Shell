@@ -312,7 +312,7 @@ int exitFunction(bool* done)
 //************************************************************
 void shell()
 {
-	clear();
+	//clear();
 	printf("Warrior's Terminal initialized..\n");
 	printf("Please use commands: tree,list,path or exit\n");
 }
@@ -331,7 +331,7 @@ void cdin(char *arg)
 	printf("%s\n", getcwd(paths,100));
 }
 
-//char history[8192]; not needed, not using an array for historying
+//char history[8192]; not needed, not using an array for history
 
 void functions(int historyFD, bool done){ //combining all functions into the shell file
 	char n[100];
@@ -370,7 +370,7 @@ void functions(int historyFD, bool done){ //combining all functions into the she
 				cdout();
 			}
 		}
-        if(strcmp(arg[0], "tree") == 0)
+        	if(strcmp(arg[0], "tree") == 0)
 		{
 			//write argument to history.txt file
 			write(historyFD, arg[0], strlen(arg[0]));
@@ -378,7 +378,7 @@ void functions(int historyFD, bool done){ //combining all functions into the she
 		
 			printf("Creating dir0 and contents\n");
 			tree();
-            printf("tree command tasks completed.\n");
+           		printf("tree command tasks completed.\n");
 		}
 		if(strcmp(arg[0], "list") == 0)
 		{
@@ -391,7 +391,7 @@ void functions(int historyFD, bool done){ //combining all functions into the she
 			//int status;
 			//printf("Renaming t1.txt to tree.txt\n");
 			//status = rename("t1.txt", "tree.txt");
-            printf("list command tasks completed.\n");
+            		printf("list command tasks completed.\n");
 		}
 		if(strcmp(arg[0], "path") == 0)
 		{
