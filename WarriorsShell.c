@@ -312,6 +312,7 @@ int exitFunction(bool* done)
 //************************************************************
 void shell()
 {
+	clear();
 	printf("Warrior's Terminal initialized..\n");
 	printf("Please use commands: tree,list,path or exit\n");
 }
