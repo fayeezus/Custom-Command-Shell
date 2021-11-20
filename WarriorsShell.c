@@ -357,7 +357,7 @@ void functions(int historyFD, bool done){ //combining all functions into the she
 		}
 		if(arg[0] == NULL)
 			exit(0);
-		if(strcmp(arg[0], "cd") == 0)
+		else if(strcmp(arg[0], "cd") == 0)
 		{
 			if(arg[1] != NULL)
 			{
@@ -370,7 +370,7 @@ void functions(int historyFD, bool done){ //combining all functions into the she
 				cdout();
 			}
 		}
-        	if(strcmp(arg[0], "tree") == 0)
+        	else if(strcmp(arg[0], "tree") == 0)
 		{
 			//write argument to history.txt file
 			write(historyFD, arg[0], strlen(arg[0]));
@@ -380,7 +380,7 @@ void functions(int historyFD, bool done){ //combining all functions into the she
 			tree();
            		printf("tree command tasks completed.\n");
 		}
-		if(strcmp(arg[0], "list") == 0)
+		else if(strcmp(arg[0], "list") == 0)
 		{
 			//write argument to history.txt file
 			write(historyFD, arg[0], strlen(arg[0]));
@@ -393,7 +393,7 @@ void functions(int historyFD, bool done){ //combining all functions into the she
 			//status = rename("t1.txt", "tree.txt");
             		printf("list command tasks completed.\n");
 		}
-		if(strcmp(arg[0], "path") == 0)
+		else if(strcmp(arg[0], "path") == 0)
 		{
 			//write argument to history.txt file
 			write(historyFD, arg[0], strlen(arg[0]));
@@ -402,7 +402,7 @@ void functions(int historyFD, bool done){ //combining all functions into the she
 			printf("Executing path command..\n");
 			path();
 		}
-		if(strcmp(arg[0], "exit") == 0)
+		else if(strcmp(arg[0], "exit") == 0)
 		{
 			//write argument to history.txt file
 			write(historyFD, arg[0], strlen(arg[0]));
