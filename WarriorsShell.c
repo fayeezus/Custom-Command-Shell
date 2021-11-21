@@ -10,6 +10,8 @@
 #include <errno.h>
 #include <sys/stat.h>
 
+//clears screen with previous commands.
+#define clear() printf("\033[H\033[J") 
 //************************************************************
 //tree.c by Moshahid Kallol Started
 //************************************************************
@@ -344,19 +346,22 @@ void shell()
 	printf("Warrior's Terminal initialized..\n");
 	printf("Please use commands: tree,list,path or exit\n");
 }
-//code to go to previous directory
-void cdout()
+
+//printing current working directory
+//source: https://www.geeksforgeeks.org/chdir-in-c-language-with-examples/
+void currdir()
 {
-	char paths[100];
+	char s[100];
 	chdir("..");
-	printf("%s\n", getcwd(paths,100));
+	printf("%s\n", getcwd(s,100));
 }
+
 //code to go to specific directory
-void cdin(char *arg)
+void specdir(char *arg)
 {
-	char paths[100];
+	char s[100];
 	chdir(arg);
-	printf("%s\n", getcwd(paths,100));
+	printf("%s\n", getcwd(s,100));
 }
 
 //combining all functions into the shell file
@@ -385,12 +390,12 @@ void functions(int historyFD, bool done)
 			if(arg[1] != NULL)
 			{
 				printf("Current Specified Directory: ");
-				cdin(arg[1]);
+				specdir(arg[1]);
 			}
 			else
 			{
 				printf("Previous Specified Directory: ");
-				cdout();
+				currdir();
 			}
 		}
         	else if(strcmp(arg[0], "tree") == 0)
@@ -399,9 +404,9 @@ void functions(int historyFD, bool done)
 			write(historyFD, arg[0], strlen(arg[0]));
 			write(historyFD, "\n", 1);
 		
-			printf("Creating dir0 and contents\n");
+			printf("Creating dir0 its contents\n");
 			tree();
-           		printf("tree command tasks completed.\n");
+             	printf("tree command tasks completed.\n");
 		}
 		else if(strcmp(arg[0], "list") == 0)
 		{
@@ -409,12 +414,8 @@ void functions(int historyFD, bool done)
 			write(historyFD, arg[0], strlen(arg[0]));
 			write(historyFD, "\n", 1);
 
-			//clear();
 			list();
-			//int status;
-			//printf("Renaming t1.txt to tree.txt\n");
-			//status = rename("t1.txt", "tree.txt");
-            		printf("list command tasks completed.\n");
+            	printf("list command tasks completed.\n");
 		}
 		else if(strcmp(arg[0], "path") == 0)
 		{
@@ -440,7 +441,7 @@ void functions(int historyFD, bool done)
 //************************************************************
 
 int main() 
-{ 
+{ 	
 	char* historyFileName = "history.txt";
 
 	//open a file called history.txt
@@ -462,7 +463,7 @@ int main()
 	}
 
 	bool done = false;
-	//clear();
+	clear();
 	shell(); 
 	functions(historyFD, done);
 
