@@ -428,6 +428,7 @@ void functions(int historyFD, bool done)
 		}
         	else if(strcmp(arg[0], "tree") == 0) //when user types "tree", it will execute tree() command and save it to history.txt file
 		{
+			//write argument to history.txt file
 			if(write(historyFD, arg[0], strlen(arg[0])) < 0)
 			{
 				printf("Error writing to history.txt");
@@ -450,6 +451,7 @@ void functions(int historyFD, bool done)
 		}
 		else if(strcmp(arg[0], "list") == 0) //when user types "list", it will execute list() command and save it to history.txt file
 		{
+			//write argument to history.txt file
 			if(write(historyFD, arg[0], strlen(arg[0])) < 0)
 			{
 				printf("Error writing to history.txt");
@@ -471,6 +473,7 @@ void functions(int historyFD, bool done)
 		}
 		else if(strcmp(arg[0], "path") == 0) //when user types "path", it will execute path() command and save it to history.txt file
 		{
+			//write argument to history.txt file
 			if(write(historyFD, arg[0], strlen(arg[0])) < 0)
 			{
 				printf("Error writing to history.txt");
@@ -491,6 +494,7 @@ void functions(int historyFD, bool done)
 		}
 		else if(strcmp(arg[0], "exit") == 0) //when user types "exit", it will exit the program and print last 4 commands
 		{
+			//write argument to history.txt file
 			if(write(historyFD, arg[0], strlen(arg[0])) < 0)
 			{
 				printf("Error writing to history.txt");
