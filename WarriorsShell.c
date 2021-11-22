@@ -83,6 +83,7 @@ void list()
 	if (pid == 0)
 	{
         printf("(1) Terminal screen has been cleared.\n\n");
+        printf("(2) Below is a list of all content of current directory: ");
 		FILE *fp=popen("ls -l","r"); //popen() is used so that the program can communicate directly to the
 		//shell which will invoke it's ls command and return a file pointer/stream that can be used
 		//to read the output of the shell
@@ -102,13 +103,14 @@ void list()
 		}
 
 		rename("t1.txt", "tree.txt");
-        printf("(2) Changed name for t1.txt to tree.txt.\n\n");
+        printf("\n");
+        printf("(3) Changed name for t1.txt to tree.txt.\n\n");
 		//char* param[] = {"mv", "t1.txt", "tree.txt", NULL};
 		//execvp("usr/bin/mv", param);
 
 		pclose(fp);
 		close(fd);
-        printf("(3) Successfully closed all files.\n\n");
+        //printf("(3) Successfully closed all files.\n\n");
 		exit(EXIT_SUCCESS);
 	}
 
@@ -127,75 +129,77 @@ void list()
 //************************************************************
 //path.c by Progga Chowdhury Started
 //************************************************************
-void path()
+void path ()
 {
 	//int main (int argc, char **argv) {
 	FILE * t2_file = fopen("t2.txt", "w+"); // open the file t2.txt in reading and writing mode
-	printf("---------------------------------------------------------------------------------------------------- \n\n");                                   
 
-	char content[1024]; // this array is used to store the contents of directory 
-	if (getcwd(content, sizeof(content)) != NULL) 
+	//printf("---------------------------------------------------------------------------------------------------- \n\n");                                   
+
+	char cont[100]; // this array is used to store the contents of directory 
+	if (getcwd(cont, sizeof(cont)) != NULL) // the getcwd() functions gets the path name of the current working directory
 	{ 
-		// the getcwd() functions gets the path name of the current working directory
-		fputs(content, t2_file); // the fputs() function will write an array of characters to a file 
+		fputs(cont, t2_file); // the fputs() function will write an array of characters to a file 
 		fclose(t2_file); // close the t2.txt file 
 
-		// 1. print current working directory path to txt2.c & ternimal 
-		printf("(1) Wrote the path of the current directory to the terminal & t2.txt \n\n---> PATH OF CURRENT DIRECTORY: %s \n\n", content); 	
-		rename("t2.txt", "path.txt"); // 2. change name of text file "t2.txt" into "path.txt"
+		// *** 1. PRINT CURRENT WORKING DIRECTORY PATH TO t2.txt AND terminal ***
+		printf("(1) Wrote the path of the current directory to the terminal & t2.txt \n\n---> PATH OF CURRENT DIRECTORY: %s \n\n", cont); 	
+		
+		// *** 2. CHANGE THE NAME OF t2.txt INTO path.txt ***
+		rename("t2.txt", "path.txt"); 
 		printf("(2) Renamed the file t2.txt into path.txt \n\n"); // print that t2.txt file was renamed to path.txt
 
-		// open the necessary files to be used in concatenation later
-		FILE* tree_file = fopen("tree.txt", "r"); // open tree.txt 
-		FILE* path_file = fopen("path.txt", "r"); // open path.txt 
-		FILE* t3_file = fopen("t3.txt", "a"); // open t3.txt 
+		FILE *tree_file, *path_file, *t3_file; // open the necessary files to be used in concatenation later
+		tree_file = fopen("tree.txt", "r"); 
+		path_file = fopen("path.txt", "r"); 
+		t3_file = fopen("t3.txt", "a"); 
 
-		char concatenate; // 3. concatenate content of tree.txt & path.txt into t3.txt
-		if (tree_file == NULL || t3_file == NULL) 
+		// *** 3. CONCATENATE CONTENT OF tree.txt & path.txt INTO t3.txt ***
+		char concat; 
+		if (tree_file == NULL || t3_file == NULL) // if the files are not found / do not exist
 		{
-			// if the files are not found / do not exist
-			perror("ERROR: OPENING FILES \n\n"); // print this error message 
+			perror("files access \n\n"); // perror 
+			printf("ERROR: COULD NOT ACCESS THE REQUIRED FILES \n\n"); // print error message
 			exit(0); // and then exit 
 		}
 
-		concatenate = fgetc(tree_file); // this handles concatenation of tree.txt into t3.txt 
-		while (concatenate != EOF) 
+		concat = fgetc(tree_file); // this handles concatenation of tree.txt into t3.txt 
+		while (concat != EOF) // until the end of the file
 		{ 
-			// EOF implies until the end of the file
-			fputc(concatenate, t3_file); // fputc() will write a single character at a time to the provided file 
-			concatenate = fgetc(tree_file); // fgetc() will to read the content of a file, one character at a time
+			fputc(concat, t3_file); // fputc() will write a single character at a time to the provided file 
+			concat = fgetc(tree_file); // fgetc() will to read the content of a file, one character at a time
+		}
+		
+		concat = fgetc(path_file); // this handles concatenation of path.txt into t3.txt
+		while (concat != EOF) // until the end of the file
+		{ 
+			fputc(concat, t3_file); // fputc() will write a single character at a time to the provided file 
+			concat = fgetc(path_file); // fgetc() will to read the content of a file, one character at a time
 		}
 
-		concatenate = fgetc(path_file); // this handles concatenation of path.txt into t3.txt
-		while (concatenate != EOF) 
-		{ 
-			// EOF implies until the end of the file
-			fputc(concatenate, t3_file); // fputc() will write a single character at a time to the provided file 
-			concatenate = fgetc(path_file); // fgetc() will to read the content of a file, one character at a time
-		}
-
-		fclose(tree_file);
-		fclose(path_file);
-		fclose(t3_file);
+		fclose(tree_file); // close tree.txt
+		fclose(path_file); // close path.txt
+		fclose(t3_file); // close t3.txt 
 
 		printf("(3) Concatenated the content of tree.txt & path.txt into t3.txt \n\n"); // print that concatenation was successful 
 
-		rename("t3.txt", "log.txt"); // 4. change the neme of t3.txt into log.txt 
+		// *** 4. CHANGE THE NAME OF t3.txt INTO log.txt ***
+		rename("t3.txt", "log.txt"); 
 		printf("(4) Renamed the file t3.txt into log.txt \n\n"); /// print that t3.txt file was renamed to log.txt
 
-		remove("tree.txt"); // 5. delete tree.txt
-		remove("path.txt"); // 5. delete path.txt
+		// *** 5. DELETE tree.txt AND path.txt ***
+		remove("tree.txt"); 
+		remove("path.txt"); 
 		printf("(5) Deleted files tree.txt & path.txt \n\n"); // print that the files tree.txt & path.txt were deleted successfully
 
-		printf("---------------------------------------------------------------------------------------------------- \n\n");                                   
+		//printf("---------------------------------------------------------------------------------------------------- \n\n");                                   
 	}
 	
-	else 
-	{ 
-		// else, if the current directory was unable to be accessed (getcwd error)... 
-		perror("ERROR: CURRENT DIRECTORY PATH \n\n"); // print this error message
+	else // else, if the current directory was unable to be accessed (getcwd error)... 
+	{
+		perror("dir path \n\n"); // perror
+		printf("ERROR: UNABLE TO ACCESS CURRENT DIRECTORY PATH \n\n"); // print error message
 	}
-
 }
 
 //************************************************************
@@ -343,8 +347,8 @@ int exitFunction(bool* done)
 		*done = true;
 		return 1;
 	}
-      //  printf("---------------------------------------------------------------------------------------------------- \n\n");
-		printf("\nHit RETURN OR ENTER to exit terminal.\n");
+        //printf("\n---------------------------------------------------------------------------------------------------- \n\n");
+		printf("\n*** Hit RETURN OR ENTER to exit the terminal *** \n");
         
 	//loop to make sure
 	//program exits when ENTER or RETURN is hit
@@ -365,9 +369,9 @@ int exitFunction(bool* done)
 void shell()
 {
     printf("---------------------------------------------------------------------------------------------------- \n\n");
-	printf("Warrior's Terminal initialized..\n\n");
+	printf("WARRIOR'S TERMINAL INITIALIZED...\n\n");
     printf("---------------------------------------------------------------------------------------------------- \n\n");
-	printf("Please use commands: tree,list,path or exit\n\n");
+	printf("***** PLEASE USE THE FOLLOWING COMMANDS: tree, list, path or exit ***** \n\n");
 }
 
 //printing current working directory
@@ -417,18 +421,17 @@ void functions(int historyFD, bool done)
 			{
 				printf("Current Specified Directory: ");
 				specdir(arg[1]); //prints current directory
-                printf("Please use commands: tree,list,path or exit\n\n");
+                printf("***** PLEASE USE THE FOLLOWING COMMANDS: tree, list, path or exit ***** \n\n");
 			}
 			else
 			{
 				printf("Previous Specified Directory: ");
 				currdir(); //prints previous directory
-                printf("Please use commands: tree,list,path or exit\n\n");
+                printf("***** PLEASE USE THE FOLLOWING COMMANDS: tree, list, path or exit ***** \n\n");
 			}
 		}
         	else if(strcmp(arg[0], "tree") == 0) //when user types "tree", it will execute tree() command and save it to history.txt file
 		{
-			//write argument to history.txt file
 			if(write(historyFD, arg[0], strlen(arg[0])) < 0)
 			{
 				printf("Error writing to history.txt");
@@ -443,15 +446,14 @@ void functions(int historyFD, bool done)
 				return;
 			}
             printf("---------------------------------------------------------------------------------------------------- \n\n");
-			printf("Executing tree command..\n");
+			printf("Executing tree command... \n\n");
 			tree(); //executing tree() command
-             	printf("tree command tasks completed. Check the folder.\n");
+             	printf("Tree command tasks completed. Please, check the folder for changes.\n\n");
                 printf("---------------------------------------------------------------------------------------------------- \n\n");
-                printf("Please use commands: tree,list,path or exit\n\n");
+                printf("***** PLEASE USE THE FOLLOWING COMMANDS: tree, list, path or exit ***** \n\n");
 		}
 		else if(strcmp(arg[0], "list") == 0) //when user types "list", it will execute list() command and save it to history.txt file
 		{
-			//write argument to history.txt file
 			if(write(historyFD, arg[0], strlen(arg[0])) < 0)
 			{
 				printf("Error writing to history.txt");
@@ -467,13 +469,12 @@ void functions(int historyFD, bool done)
 			}
             //printf("---------------------------------------------------------------------------------------------------- \n\n");
 			list(); //executing list() command
-            	printf("list command tasks completed. Check the folder for changes.\n");
+                printf("List command tasks completed. Please, check the folder for changes.\n\n");
                 printf("---------------------------------------------------------------------------------------------------- \n\n");
-                 printf("Please use commands: tree,list,path or exit\n\n");
+                 printf("***** PLEASE USE THE FOLLOWING COMMANDS: tree, list, path or exit ***** \n\n");
 		}
 		else if(strcmp(arg[0], "path") == 0) //when user types "path", it will execute path() command and save it to history.txt file
 		{
-			//write argument to history.txt file
 			if(write(historyFD, arg[0], strlen(arg[0])) < 0)
 			{
 				printf("Error writing to history.txt");
@@ -488,13 +489,17 @@ void functions(int historyFD, bool done)
 				return;
 			}
 			
-			printf("Executing path command..\n");
+			printf("---------------------------------------------------------------------------------------------------- \n\n");
+			printf("Executing path command...\n\n");
 			path(); //executing path() command
-            printf("Please use commands: tree,list,path or exit\n");
+			printf("Path command tasks completed. Please, check the folder for changes.\n\n");
+			printf("---------------------------------------------------------------------------------------------------- \n\n");
+            printf("***** PLEASE USE THE FOLLOWING COMMANDS: tree, list, path or exit ***** \n\n");
 		}
 		else if(strcmp(arg[0], "exit") == 0) //when user types "exit", it will exit the program and print last 4 commands
 		{
-			//write argument to history.txt file
+            printf("---------------------------------------------------------------------------------------------------- \n\n");
+			printf("Executing exit command...\n");
 			if(write(historyFD, arg[0], strlen(arg[0])) < 0)
 			{
 				printf("Error writing to history.txt");
