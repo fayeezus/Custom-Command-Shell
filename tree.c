@@ -6,7 +6,7 @@
 int main()
 {
     // Create Dir0 with
-    int status = mkdir("Dir0", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+    mkdir("Dir0", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 
     chdir("Dir0"); //changing directory to Dir0;
 
