@@ -18,20 +18,26 @@
 //************************************************************
 void tree()
 {
+    //printf("---------------------------------------------------------------------------------------------------- \n\n");
     mkdir("Dir0", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-
+    printf("(1) Make Dir0 completed.\n\n");
     chdir("Dir0"); //changing directory to Dir0;
+    printf("(2) Change directory to Dir0 completed.\n\n");
 
     //creating 3 txt files;
     int t1 = open("t1.txt", O_RDWR | O_CREAT, S_IRWXU | S_IRWXG | S_IRWXO);
     int t2 = open("t2.txt", O_RDWR | O_CREAT, S_IRWXU | S_IRWXG | S_IRWXO);
     int t3 = open("t3.txt", O_RDWR | O_CREAT, S_IRWXU | S_IRWXG | S_IRWXO);
+    printf("(3) Created three text files in Dir0 called t1.txt, t2.txt and t3.txt.\n\n");
 
     close(t1);
     close(t2);
     close(t3);
+    printf("(4) Closed all text files\n\n");
 
     mkdir("Dir1", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH); //making Dir1 inside Dir0;
+    printf("(5) Create Dir1 inside Dir0 completed.\n\n");
+    //printf("---------------------------------------------------------------------------------------------------- \n\n");
     //printf("All the tasks are complete \n");
 }
 //************************************************************
@@ -44,6 +50,7 @@ void tree()
 //************************************************************
 void list()
 {
+    //printf("---------------------------------------------------------------------------------------------------- \n\n"); 
 
 	int status = 0;
 
@@ -59,7 +66,6 @@ void list()
 	{
 		execlp("clear", "clear", (char*) NULL);
 	}
-
 	if(waitpid(pid, &status, 0) != pid)
 	{
 	    perror("waitpid");
@@ -76,7 +82,7 @@ void list()
 
 	if (pid == 0)
 	{
-
+        printf("(1) Terminal screen has been cleared.\n\n");
 		FILE *fp=popen("ls -l","r"); //popen() is used so that the program can communicate directly to the
 		//shell which will invoke it's ls command and return a file pointer/stream that can be used
 		//to read the output of the shell
@@ -96,11 +102,13 @@ void list()
 		}
 
 		rename("t1.txt", "tree.txt");
+        printf("(2) Changed name for t1.txt to tree.txt.\n\n");
 		//char* param[] = {"mv", "t1.txt", "tree.txt", NULL};
 		//execvp("usr/bin/mv", param);
 
 		pclose(fp);
 		close(fd);
+        printf("(3) Successfully closed all files.\n\n");
 		exit(EXIT_SUCCESS);
 	}
 
@@ -108,7 +116,9 @@ void list()
 	{
 	    perror("waitpid");
 	    //return 1;
-	}
+	
+    //printf("---------------------------------------------------------------------------------------------------- \n\n");
+    }
 }
 //************************************************************
 //List.c by Orlando Saddler Finished
@@ -199,6 +209,7 @@ void path()
 
 int exitFunction(bool* done)
 {
+   // printf("---------------------------------------------------------------------------------------------------- \n\n");
 	int pid = 0;
 	int status = 0;
 
@@ -322,9 +333,9 @@ int exitFunction(bool* done)
 		*done = true;
 		return 1;
 	}
-
+      //  printf("---------------------------------------------------------------------------------------------------- \n\n");
 		printf("\nHit RETURN OR ENTER to exit terminal.\n");
-
+        
 	//loop to make sure
 	//program exits when ENTER or RETURN is hit
 	//from user
@@ -343,8 +354,10 @@ int exitFunction(bool* done)
 //************************************************************
 void shell()
 {
-	printf("Warrior's Terminal initialized..\n");
-	printf("Please use commands: tree,list,path or exit\n");
+    printf("---------------------------------------------------------------------------------------------------- \n\n");
+	printf("Warrior's Terminal initialized..\n\n");
+    printf("---------------------------------------------------------------------------------------------------- \n\n");
+	printf("Please use commands: tree,list,path or exit\n\n");
 }
 
 //printing current working directory
@@ -367,21 +380,24 @@ void specdir(char *arg)
 //combining all functions into the shell file
 void functions(int historyFD, bool done)
 { 	char n[100];
-	char* arg[100];		 
+	char* arg[100];
+    char current[100]; 
 	while(!done) //runs the following functions until done gets set to true, which happens when user types "exit"
 	{
-		printf("#");	//our command prompt is "#"		   
-		fgets(n, 100, stdin);
-		char *s = strchr(n, '\n');
+        getcwd(current, sizeof(current)); //function returns the name of the current working directory
+        printf("username@username:~%s->", current); // this is what will print when you are in the shell
+        printf("# ");	//our command prompt is "#"		   
+		fgets(n, 100, stdin); // fgets() function as it applies to reading text input
+		char *s = strchr(n, '\n'); //standard character
 		if(s){			   
 			*s = '\0';
-		}	   
-		arg[0] = strtok(n," "); 
+		}	
+		arg[0] = strtok(n," "); //set null character in each delimiter indicated
 		int i = 0;	 	   
 		while(arg[i] != NULL)      
 		{			   
 					  
-			arg[++i] = strtok(NULL, " "); 
+			arg[++i] = strtok(NULL, " "); //set null character in each delimiter indicated
 		}
 		if(arg[0] == NULL)
 			exit(0);
@@ -390,12 +406,14 @@ void functions(int historyFD, bool done)
 			if(arg[1] != NULL)
 			{
 				printf("Current Specified Directory: ");
-				specdir(arg[1]);
+				specdir(arg[1]); //prints current directory
+                printf("Please use commands: tree,list,path or exit\n\n");
 			}
 			else
 			{
 				printf("Previous Specified Directory: ");
-				currdir();
+				currdir(); //prints previous directory
+                printf("Please use commands: tree,list,path or exit\n\n");
 			}
 		}
         	else if(strcmp(arg[0], "tree") == 0) //when user types "tree", it will execute tree() command and save it to history.txt file
@@ -403,19 +421,23 @@ void functions(int historyFD, bool done)
 			//write argument to history.txt file
 			write(historyFD, arg[0], strlen(arg[0]));
 			write(historyFD, "\n", 1);
-		
-			printf("Creating dir0 its contents\n");
-			tree();
-             	printf("tree command tasks completed.\n");
+            printf("---------------------------------------------------------------------------------------------------- \n\n");
+			printf("Executing tree command..\n");
+			tree(); //executing tree() command
+             	printf("tree command tasks completed. Check the folder.\n");
+                printf("---------------------------------------------------------------------------------------------------- \n\n");
+                printf("Please use commands: tree,list,path or exit\n\n");
 		}
 		else if(strcmp(arg[0], "list") == 0) //when user types "list", it will execute list() command and save it to history.txt file
 		{
 			//write argument to history.txt file
 			write(historyFD, arg[0], strlen(arg[0]));
 			write(historyFD, "\n", 1);
-
-			list();
-            	printf("list command tasks completed.\n");
+            //printf("---------------------------------------------------------------------------------------------------- \n\n");
+			list(); //executing list() command
+            	printf("list command tasks completed. Check the folder for changes.\n");
+                printf("---------------------------------------------------------------------------------------------------- \n\n");
+                 printf("Please use commands: tree,list,path or exit\n\n");
 		}
 		else if(strcmp(arg[0], "path") == 0) //when user types "path", it will execute path() command and save it to history.txt file
 		{
@@ -424,16 +446,18 @@ void functions(int historyFD, bool done)
 			write(historyFD, "\n", 1);
 			
 			printf("Executing path command..\n");
-			path();
+			path(); //executing path() command
+            printf("Please use commands: tree,list,path or exit\n");
 		}
-		else if(strcmp(arg[0], "exit") == 0) //when user types "path", it will exit the program and print last 4 commands
+		else if(strcmp(arg[0], "exit") == 0) //when user types "exit", it will exit the program and print last 4 commands
 		{
 			//write argument to history.txt file
 			write(historyFD, arg[0], strlen(arg[0]));
 			write(historyFD, "\n", 1);
 
-			exitFunction(&done);
+			exitFunction(&done); //executing exit() command
 		}
+
 	}
 }
 //************************************************************
@@ -442,6 +466,7 @@ void functions(int historyFD, bool done)
 
 int main() 
 { 	
+    
 	char* historyFileName = "history.txt";
 
 	//open a file called history.txt
@@ -463,8 +488,8 @@ int main()
 	}
 
 	bool done = false;
-	clear();
-	shell(); 
+	clear(); //executing clear() command
+	shell(); //executing shell() command
 	functions(historyFD, done);
 
 	//close history.txt
