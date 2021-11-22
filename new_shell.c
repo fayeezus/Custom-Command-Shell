@@ -250,9 +250,19 @@ int exitFunction(bool* done)
 		return 1;
 	}
 
-	chdir("..");
-
-
+	char content[1024]; // this array is used to store the path of the current directory
+	char* ret;
+	if (getcwd(content, sizeof(content)) != NULL) 
+	{
+		ret = strstr(content, "Dir0");
+		//if in Dir0 go to parent directory where the history.txt
+		//file is located
+		if(ret != NULL)
+		{
+			chdir("..");
+		}
+	}
+	
 	char* scriptFileName = "history.h";
 
 	//open a file call history.h
@@ -426,8 +436,19 @@ void functions(int historyFD, bool done)
         	else if(strcmp(arg[0], "tree") == 0) //when user types "tree", it will execute tree() command and save it to history.txt file
 		{
 			//write argument to history.txt file
-			write(historyFD, arg[0], strlen(arg[0]));
-			write(historyFD, "\n", 1);
+			if(write(historyFD, arg[0], strlen(arg[0])) < 0)
+			{
+				printf("Error writing to history.txt");
+				perror("write");
+				return;
+			}
+			
+			if(write(historyFD, "\n", 1) < 0)
+			{
+				printf("Error writing to history.txt");
+				perror("write");
+				return;
+			}
             printf("---------------------------------------------------------------------------------------------------- \n\n");
 			printf("Executing tree command... \n\n");
 			tree(); //executing tree() command
@@ -438,8 +459,19 @@ void functions(int historyFD, bool done)
 		else if(strcmp(arg[0], "list") == 0) //when user types "list", it will execute list() command and save it to history.txt file
 		{
 			//write argument to history.txt file
-			write(historyFD, arg[0], strlen(arg[0]));
-			write(historyFD, "\n", 1);
+			if(write(historyFD, arg[0], strlen(arg[0])) < 0)
+			{
+				printf("Error writing to history.txt");
+				perror("write");
+				return;
+			}
+			
+			if(write(historyFD, "\n", 1) < 0)
+			{
+				printf("Error writing to history.txt");
+				perror("write");
+				return;
+			}
             //printf("---------------------------------------------------------------------------------------------------- \n\n");
 			list(); //executing list() command
             	printf("List command tasks completed. Please, check the folder for changes.\n\n");
@@ -449,8 +481,19 @@ void functions(int historyFD, bool done)
 		else if(strcmp(arg[0], "path") == 0) //when user types "path", it will execute path() command and save it to history.txt file
 		{
 			//write argument to history.txt file
-			write(historyFD, arg[0], strlen(arg[0]));
-			write(historyFD, "\n", 1);
+			if(write(historyFD, arg[0], strlen(arg[0])) < 0)
+			{
+				printf("Error writing to history.txt");
+				perror("write");
+				return;
+			}
+			
+			if(write(historyFD, "\n", 1) < 0)
+			{
+				printf("Error writing to history.txt");
+				perror("write");
+				return;
+			}
 			
 			printf("---------------------------------------------------------------------------------------------------- \n\n");
 			printf("Executing path command...\n\n");
@@ -465,8 +508,19 @@ void functions(int historyFD, bool done)
 			printf("Executing exit command...\n");
 			//printf("(1) List of all content of current directory: ");
 			//write argument to history.txt file
-			write(historyFD, arg[0], strlen(arg[0]));
-			write(historyFD, "\n", 1);
+			if(write(historyFD, arg[0], strlen(arg[0])) < 0)
+			{
+				printf("Error writing to history.txt");
+				perror("write");
+				return;
+			}
+			
+			if(write(historyFD, "\n", 1) < 0)
+			{
+				printf("Error writing to history.txt");
+				perror("write");
+				return;
+			}
 
 			exitFunction(&done); //executing exit() command
 		}
