@@ -10,8 +10,9 @@
 #include <errno.h>
 #include <sys/stat.h>
 
-//clears screen with previous commands.
+//clears terminal with previous commands.
 #define clear() printf("\033[H\033[J") 
+
 //************************************************************
 //tree.c by Moshahid Kallol Started
 //************************************************************
@@ -342,7 +343,6 @@ int exitFunction(bool* done)
 //************************************************************
 void shell()
 {
-	//clear();
 	printf("Warrior's Terminal initialized..\n");
 	printf("Please use commands: tree,list,path or exit\n");
 }
@@ -368,9 +368,9 @@ void specdir(char *arg)
 void functions(int historyFD, bool done)
 { 	char n[100];
 	char* arg[100];		 
-	while(!done)
+	while(!done) //runs the following functions until done gets set to true, which happens when user types "exit"
 	{
-		printf("#");			   
+		printf("#");	//our command prompt is "#"		   
 		fgets(n, 100, stdin);
 		char *s = strchr(n, '\n');
 		if(s){			   
@@ -385,7 +385,7 @@ void functions(int historyFD, bool done)
 		}
 		if(arg[0] == NULL)
 			exit(0);
-		else if(strcmp(arg[0], "cd") == 0)
+		else if(strcmp(arg[0], "cd") == 0) //when user types cd, it will print current directory. and if they do cd .. it will print previous specfied directory
 		{
 			if(arg[1] != NULL)
 			{
@@ -398,7 +398,7 @@ void functions(int historyFD, bool done)
 				currdir();
 			}
 		}
-        	else if(strcmp(arg[0], "tree") == 0)
+        	else if(strcmp(arg[0], "tree") == 0) //when user types "tree", it will execute tree() command and save it to history.txt file
 		{
 			//write argument to history.txt file
 			write(historyFD, arg[0], strlen(arg[0]));
@@ -408,7 +408,7 @@ void functions(int historyFD, bool done)
 			tree();
              	printf("tree command tasks completed.\n");
 		}
-		else if(strcmp(arg[0], "list") == 0)
+		else if(strcmp(arg[0], "list") == 0) //when user types "list", it will execute list() command and save it to history.txt file
 		{
 			//write argument to history.txt file
 			write(historyFD, arg[0], strlen(arg[0]));
@@ -417,7 +417,7 @@ void functions(int historyFD, bool done)
 			list();
             	printf("list command tasks completed.\n");
 		}
-		else if(strcmp(arg[0], "path") == 0)
+		else if(strcmp(arg[0], "path") == 0) //when user types "path", it will execute path() command and save it to history.txt file
 		{
 			//write argument to history.txt file
 			write(historyFD, arg[0], strlen(arg[0]));
@@ -426,7 +426,7 @@ void functions(int historyFD, bool done)
 			printf("Executing path command..\n");
 			path();
 		}
-		else if(strcmp(arg[0], "exit") == 0)
+		else if(strcmp(arg[0], "exit") == 0) //when user types "path", it will exit the program and print last 4 commands
 		{
 			//write argument to history.txt file
 			write(historyFD, arg[0], strlen(arg[0]));
