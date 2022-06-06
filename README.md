@@ -1,4 +1,4 @@
-# CSC332 Group Project - Program Directory
+# CSC332 Group Project - Program Directory Custom Command Shell
 
 # Team Members:
 ## Faez Farhad
